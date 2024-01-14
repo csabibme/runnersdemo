@@ -10,7 +10,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/runner")
 public class RunnerRestController {
-
     @Autowired
     private LapTimeRepository lapTimeRepository;
     private RunnerRepository runnerRepository;
