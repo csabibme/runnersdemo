@@ -51,6 +51,7 @@ public class RunnerRestController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @GetMapping("")
     public List<RunnerEntity> getAllRunners() {
         return runnerRepository.findAll();
@@ -81,6 +82,8 @@ public class RunnerRestController {
             this.lapTimeSeconds = lapTimeSeconds;
         }
     }
+
+
 
     @PostMapping("/{id}/changeshoe")
     public ResponseEntity<String> changeRunnerShoe(@PathVariable Long id, @RequestBody String newShoeName) {
