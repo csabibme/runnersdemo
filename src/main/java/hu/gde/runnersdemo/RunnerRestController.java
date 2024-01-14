@@ -82,7 +82,7 @@ public class RunnerRestController {
         }
     }
 
-    @PutMapping("/{id}/changeshoe")
+    @PostMapping("/{id}/changeshoe")
     public ResponseEntity<String> changeRunnerShoe(@PathVariable Long id, @RequestBody String newShoeName) {
         RunnerEntity runner = runnerRepository.findById(id).orElse(null);
 
