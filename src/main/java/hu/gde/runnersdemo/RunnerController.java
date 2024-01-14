@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
+import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 @Controller
@@ -20,9 +20,17 @@ public class RunnerController {
     @GetMapping("/runners")
     public String getAllRunners(Model model) {
         List<RunnerEntity> runners = runnerRepository.findAll();
+
+        double averagePace = runners.stream()
+                .mapToLong(RunnerEntity::getAveragePace)
+                .average()
+                .orElse(0.0);
         model.addAttribute("runners", runners);
+        model.addAttribute("averagePace", averagePace);
         return "runners";
+
     }
+
 
     @GetMapping("/runner/{id}")
     public String getRunnerById(@PathVariable Long id, Model model) {
@@ -53,6 +61,7 @@ public class RunnerController {
             return "error";
         }
     }
+
     @PostMapping("/runner/{id}/addlaptime")
     public String addLaptime(@PathVariable Long id, @ModelAttribute LapTimeEntity laptime) {
         RunnerEntity runner = runnerRepository.findById(id).orElse(null);
