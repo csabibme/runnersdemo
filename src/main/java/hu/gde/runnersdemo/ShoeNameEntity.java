@@ -43,4 +43,6 @@ public class ShoeNameEntity {
     public void setShoeName(String shoeName) {
         this.shoeName = shoeName;
     }
+
+
 }

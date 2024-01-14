@@ -9,15 +9,14 @@
 <body>
 <div class="container">
     <h1>Change Shoe of runner <span th:text="${runner.runnerName}">Tomi</span></h1>
-    <form th:action="@{/runner/{id}/changeshoe(id=${runner.runnerId})}" method="post">
-        <input type="hidden" name="id" th:value="${runner.runnerId}"/>
+    <form th:action="@{/runner/{id}/changeshoe(id=${runner.runnerId})}" th:object="${newShoe}" method="post">
+        <input type="hidden" th:field="*{id}"/>
         <div class="form-group">
             <label for="newShoeName">New Shoe Name:</label>
-            <input type="text" class="form-control" id="newShoeName" name="newShoeName" required>
+            <input type="text" class="form-control" id="newShoeName" name="newShoeName" th:field="*{newShoeName}" required>
         </div>
         <button type="submit" class="btn btn-primary">Change Shoe</button>
     </form>
-
 </div>
 </body>
 </html>
