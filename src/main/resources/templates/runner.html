@@ -28,6 +28,10 @@
       <td th:text="${runner.shoesize}"></td>
     </tr>
     <tr>
+      <th>Shoe</th>
+      <td th:each="shoe : ${runner.shoeNames}" th:text="${shoe.shoeName}">
+    </tr>
+    <tr>
       <td colspan="2">
         <table class="table">
           <thead>

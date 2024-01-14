@@ -64,7 +64,6 @@ public class RunnerEntity {
 
     public List<ShoeNameEntity> getShoeNames() { return shoeNames;
     }
-
     public void setShoeNames(List<ShoeNameEntity> shoeNames) {
         this.shoeNames = shoeNames;
     }
