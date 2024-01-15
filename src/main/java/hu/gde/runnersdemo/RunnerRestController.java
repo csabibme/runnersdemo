@@ -13,11 +13,13 @@ public class RunnerRestController {
     @Autowired
     private LapTimeRepository lapTimeRepository;
     private RunnerRepository runnerRepository;
+    private ShoeNameRepository shoeNameRepository;
 
     @Autowired
-    public RunnerRestController(RunnerRepository runnerRepository, LapTimeRepository lapTimeRepository) {
+    public RunnerRestController(RunnerRepository runnerRepository, LapTimeRepository lapTimeRepository, ShoeNameRepository shoeNameRepository) {
         this.runnerRepository = runnerRepository;
         this.lapTimeRepository = lapTimeRepository;
+        this.shoeNameRepository = shoeNameRepository;
     }
 
     @GetMapping("/{id}")
@@ -82,8 +84,6 @@ public class RunnerRestController {
             this.lapTimeSeconds = lapTimeSeconds;
         }
     }
-
-
 
     @PostMapping("/{id}/changeshoe")
     public ResponseEntity<String> changeRunnerShoe(@PathVariable Long id, @RequestBody String newShoeName) {

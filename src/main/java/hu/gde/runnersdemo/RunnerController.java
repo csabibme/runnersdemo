@@ -3,11 +3,9 @@ package hu.gde.runnersdemo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
+
 import java.util.List;
 
 @Controller
@@ -17,6 +15,7 @@ public class RunnerController {
     private RunnerRepository runnerRepository;
     @Autowired
     private LapTimeRepository lapTimeRepository;
+
     @GetMapping("/runners")
     public String getAllRunners(Model model) {
         List<RunnerEntity> runners = runnerRepository.findAll();
@@ -28,9 +27,7 @@ public class RunnerController {
         model.addAttribute("runners", runners);
         model.addAttribute("averagePace", averagePace);
         return "runners";
-
     }
-
 
     @GetMapping("/runner/{id}")
     public String getRunnerById(@PathVariable Long id, Model model) {
@@ -62,6 +59,19 @@ public class RunnerController {
         }
     }
 
+    @GetMapping("/runner/{id}/changeshoe")
+    public String showChangeShoeForm(@PathVariable Long id, Model model) {
+        RunnerEntity runner = runnerRepository.findById(id).orElse(null);
+        if (runner != null) {
+            model.addAttribute("runner", runner);
+            model.addAttribute("newShoeName", ""); // Initialize with an empty string
+            return "changeshoe";
+        } else {
+            // Handle error when runner is not found
+            return "error";
+        }
+    }
+
     @PostMapping("/runner/{id}/addlaptime")
     public String addLaptime(@PathVariable Long id, @ModelAttribute LapTimeEntity laptime) {
         RunnerEntity runner = runnerRepository.findById(id).orElse(null);
@@ -76,5 +86,31 @@ public class RunnerController {
         return "redirect:/runner/" + id;
     }
 
-}
+    @PostMapping("/runner/{id}/changeshoe")
+    public String changeRunnerShoe(@PathVariable Long id, @RequestParam String newShoeName) {
+        RunnerEntity runner = runnerRepository.findById(id).orElse(null);
 
+        if (runner != null) {
+            // Assuming a runner can have only one shoe at a time
+            List<ShoeNameEntity> shoes = runner.getShoeNames();
+
+            if (shoes.isEmpty()) {
+                // If the runner doesn't have a shoe, create a new ShoeNameEntity
+                ShoeNameEntity newShoe = new ShoeNameEntity();
+                newShoe.setShoeName(newShoeName);
+                newShoe.setRunner(runner);
+                shoes.add(newShoe);
+            } else {
+                // If the runner already has a shoe, update the existing one
+                ShoeNameEntity currentShoe = shoes.get(0);
+                currentShoe.setShoeName(newShoeName);
+            }
+
+            runnerRepository.save(runner);
+        } else {
+            // Handle error when runner is not found
+        }
+        return "redirect:/runner/" + id;
+    }
+
+}
